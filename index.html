@@ -30,18 +30,36 @@
 				text-align: center;
 				font-family: Roboto-Slab, 'Times New Roman', Times, serif, Impact;
 			}
+			#popup{
+				border: 0.4vw solid #252525;
+				border-radius: 0.5vw;
+				background-color: #252525;
+				color: white;
+				font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+				font-size: 1vw;
+				text-align: center;
+				margin-top: -8.4vw;
+				margin-left: 35vw;
+				margin-right: 35vw;
+				min-height: 1vw;
+			}
+			.hidden{
+				display:none;
+			}
 		</style>
 		<script>
-			let count = 0;
-			let countDivs = 0;
-			let passes = 0;
-			let acceptedKeys = ["A","B","C","D","E","F","G","H","I","J","K",
+			var date = new Date();
+			var count = 0;
+			var countDivs = 0;
+			var passes = 0;
+			var acceptedKeys = ["A","B","C","D","E","F","G","H","I","J","K",
 								"L","M","N","O","P","Q","R","S","T","U","V",
 								"W","X","Y","Z","ENTER","BACKSPACE"];
-			let wordList = ["antidisestablishmentarianisms",
+			var wordList = ["antidisestablishmentarianisms",
 							"cyclotrimethylenetrinitramine",
 							"floccinaucinihilipilification",
 							"trinitrophenylmethylnitramine"];
+							let chosenWord = wordList[date.getDay() % 4];
 			function Import() {
 				let splitNum = 3.22580645161;
 				let repeated = "";
@@ -66,6 +84,7 @@
 							count--;
 							document.getElementById("wordBox" + count).innerHTML = "";
 							document.getElementById("wordBox" + count).style = "border:0.15vw solid lightgray;";
+							document.getElementById("popup").classList.add("hidden");
 						}
 					}
 					else
@@ -74,8 +93,8 @@
 						{
 							if (passes != count)
 							{
-								countDivs = passes;
-								repeated = "";
+								let countDivs = passes;
+								let repeated = "";
 								while(countDivs < passes + 29)
 								{
 									repeated += document.getElementById("wordBox" + countDivs).innerHTML;
@@ -83,13 +102,15 @@
 								}
 								if(wordList.includes(repeated.toLowerCase()))
 								{
-									repeated = "floccinaucinihilipilification".toUpperCase().split('');
+									let repeated = chosenWord.toUpperCase().split('');
 									let countDivCycle = 0;
+									let counter = 0;
 									while(countDivCycle < 29) 
 									{
 										if(document.getElementById("wordBox" + (passes + countDivCycle)).innerHTML === repeated[countDivCycle])
 										{
 											document.getElementById("wordBox" + (passes + countDivCycle)).style = "background-color:#6aaa64;color:white;border:0.15vw solid #6aaa64;";
+											counter++;
 										}
 										else
 										{
@@ -105,15 +126,31 @@
 										countDivCycle++;
 									}
 									passes = count;
+									if(counter == 29)
+									{
+										passes = 58;
+									}
+									else
+									{
+										if(passes == 58)
+										{
+											document.getElementById("popup").innerHTML = "Correct word: " + chosenWord.toUpperCase();
+											document.getElementById("popup").classList.remove("hidden");
+										}
+									}
+								}
+								else
+								{
+									document.getElementById("popup").classList.remove("hidden");
 								}
 							}
 						}
 						else
 						{
-							if(keyPressed != "ENTER" && count < 58 && count < passes + 29)
+							if(keyPressed != "ENTER" && count < 58 && count < passes + 29 && passes != 58)
 							{
 								document.getElementById("wordBox" + count).innerHTML = keyPressed;
-								document.getElementById("wordBox" + count).style = "border:0.15vw solid darkslategray;";
+								document.getElementById("wordBox" + count).style = "border:0.15vw solid darkgray;";
 								count++;
 							}
 						}
@@ -128,5 +165,6 @@
 		</div>
 		<div id="gridContainer">
 		</div>
+		<div id="popup" class="hidden">Not a word.</div>
 	</body>
 </html>
