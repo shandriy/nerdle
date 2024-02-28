@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Nerdle - CSE MultiMedia Archives</title>
+		<style>
+			@font-face {font-family: Roboto-Slab;
+				src: url(https://fonts.gstatic.com/s/robotoslab/v34/BngbUXZYTXPIvIBgJJSb6s3BzlRRfKOFbvjoa4Omb2Rj.woff2) format('woff2');};
+			html, body, #gridContainer{
+				padding: 0;
+				margin: 0;
+			}
+			.wordBox{
+				border: 0.15vw solid lightgray;
+				margin: 0;
+				padding: 0;
+				min-width: 2.8vw;
+				max-width: 2.8vw;
+				min-height: 2.8vw;
+				text-align: center;
+				font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+				font-size: 2vw;
+			}
+			#grid{
+				margin: 3.22580645161vw 0 0 3.22580645161vw;
+				row-gap: 0.20080645161vw;
+				display: grid;
+			}
+			#topTitleBar{
+				border-bottom: 0.075vw solid lightgray;
+				text-align: center;
+				font-family: Roboto-Slab, 'Times New Roman', Times, serif, Impact;
+			}
+		</style>
+		<script>
+			let count = 0;
+			let countDivs = 0;
+			let passes = 0;
+			let acceptedKeys = ["A","B","C","D","E","F","G","H","I","J","K",
+								"L","M","N","O","P","Q","R","S","T","U","V",
+								"W","X","Y","Z","ENTER","BACKSPACE"];
+			let wordList = ["antidisestablishmentarianisms",
+							"cyclotrimethylenetrinitramine",
+							"floccinaucinihilipilification",
+							"trinitrophenylmethylnitramine"];
+			function Import() {
+				let splitNum = 3.22580645161;
+				let repeated = "";
+				while (countDivs < 58)
+				{
+					repeated += `<div class="wordBox" id="wordBox${countDivs}"></div>`;
+					countDivs++;
+				}
+				let fill = `<div id="grid" style="grid-template-columns: ${(splitNum + "vw ").repeat(28)+splitNum}vw;">
+								${repeated}
+							</div>`;
+				document.getElementById("gridContainer").innerHTML = fill;
+			}
+			document.addEventListener('keydown', function(event) {
+				let keyPressed = event.key.toUpperCase();
+				if(acceptedKeys.includes(keyPressed))
+				{
+					if(keyPressed == "BACKSPACE")
+					{
+						if(count > 0 && count > passes)
+						{
+							count--;
+							document.getElementById("wordBox" + count).innerHTML = "";
+							document.getElementById("wordBox" + count).style = "border:0.15vw solid lightgray;";
+						}
+					}
+					else
+					{
+						if(keyPressed == "ENTER" && count % 29 == 0 && count != 0)
+						{
+							if (passes != count)
+							{
+								countDivs = passes;
+								repeated = "";
+								while(countDivs < passes + 29)
+								{
+									repeated += document.getElementById("wordBox" + countDivs).innerHTML;
+									countDivs++;
+								}
+								if(wordList.includes(repeated.toLowerCase()))
+								{
+									repeated = "floccinaucinihilipilification".toUpperCase().split('');
+									let countDivCycle = 0;
+									while(countDivCycle < 29) 
+									{
+										if(document.getElementById("wordBox" + (passes + countDivCycle)).innerHTML === repeated[countDivCycle])
+										{
+											document.getElementById("wordBox" + (passes + countDivCycle)).style = "background-color:#6aaa64;color:white;border:0.15vw solid #6aaa64;";
+										}
+										else
+										{
+											if(repeated.includes(document.getElementById("wordBox" + (passes + countDivCycle)).innerHTML))
+											{
+												document.getElementById("wordBox" + (passes + countDivCycle)).style = "background-color:#c9b458;color:white;border:0.15vw solid #c9b458;";
+											}
+											else
+											{
+												document.getElementById("wordBox" + (passes + countDivCycle)).style = "background-color:#787c7e;color:white;border:0.15vw solid #787c7e;";
+											}
+										}
+										countDivCycle++;
+									}
+									passes = count;
+								}
+							}
+						}
+						else
+						{
+							if(keyPressed != "ENTER" && count < 58 && count < passes + 29)
+							{
+								document.getElementById("wordBox" + count).innerHTML = keyPressed;
+								document.getElementById("wordBox" + count).style = "border:0.15vw solid darkslategray;";
+								count++;
+							}
+						}
+					}
+				}
+			});
+		</script>
+	</head>
+	<body onload="Import()">
+		<div id="topTitleBar">
+			<h1 style="margin: 10pt">Nerdle</h1>
+		</div>
+		<div id="gridContainer">
+		</div>
+	</body>
+</html>
