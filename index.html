@@ -38,7 +38,7 @@
 				font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
 				font-size: 1vw;
 				text-align: center;
-				margin-top: -8.55vw;
+				margin-top: -8.4vw;
 				margin-left: 35vw;
 				margin-right: 35vw;
 				min-height: 1vw;
@@ -53,13 +53,21 @@
 			var countDivs = 0;
 			var passes = 0;
 			var acceptedKeys = ["A","B","C","D","E","F","G","H","I","J","K",
-								"L","M","N","O","P","Q","R","S","T","U","V",
-								"W","X","Y","Z","ENTER","BACKSPACE"];
-			var wordList = ["antidisestablishmentarianisms",
-							"cyclotrimethylenetrinitramine",
-							"floccinaucinihilipilification",
-							"trinitrophenylmethylnitramine"];
-							let chosenWord = wordList[date.getDay() % 4];
+								          "L","M","N","O","P","Q","R","S","T","U","V",
+								          "W","X","Y","Z","ENTER","BACKSPACE"];
+			var wordList = ["antidisestablishmentarianisms", //
+							        "cyclotrimethylenetrinitramine", //
+							        "floccinaucinihilipilification", //
+							        "trinitrophenylmethylnitramine", //
+                      "hexakosioihexekontahexaphobic", //
+                      "quinquagintaquadringentillion", //
+                      "octylphenoxypolyethoxyethanol", //
+                      "quinquagintatrecentilliardths", //
+                      "polytetrafluorchloroethylenes", //
+                      "tetraphenylcyclopentadienones", //
+                      "hexakosioihexekontahexaphobia", //
+                      "pyrrolidinomethyltetracycline"];
+							let chosenWord = wordList[date.getDay() + date.getDate() % 12];
 			function Import() {
 				let splitNum = 3.22580645161;
 				let repeated = "";
